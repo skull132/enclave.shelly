@@ -19,6 +19,11 @@ Current features include:
 A lot of the modules accept inputs which transparently modify the settings exposed via API.
 As such, if the module's own documentation is lacking, please refer to [Shelly's own API documentation](https://shelly-api-docs.shelly.cloud/gen2/ComponentsAndServices/Introduction).
 
+## Installing the Collection
+
+The collection can be installed using ansible-galaxy:
+`ansible-galaxy collection install git+https://github.com/skull132/enclave.shelly.git,main`
+
 ## Configuring Hosts
 
 Each device should be added as an individual host in your inventory.
