@@ -94,8 +94,20 @@ author:
 '''
 
 EXAMPLES = '''
-# Restart the shelly device. Wait 2 seconds for it to become available again.
-dodo
+# Disable MQTT on the device.
+- name: Disable MQTT
+  enclave.shelly.mqtt:
+    enable: false
+
+# Configure an MQTT server connection.
+- name: Enable MQTT
+  enclave.shelly.mqtt:
+    enable: true
+    server: mqtt_server.lan:8883
+    client_id: "" # Use the shelly's own device_id
+    user: "" # no username required
+    ssl_ca: "*" # Accept any serverside SSL certificate.
+    topic_prefix: "home/v1/room/device_1"
 '''
 
 RETURN = '''
