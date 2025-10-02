@@ -98,3 +98,46 @@ MQTT connection setup:
     ssl_ca: "*" # Accept any serverside SSL certificate.
     topic_prefix: "home/v1/room/device_1"
 ```
+
+WiFi connection examples:
+```yaml
+# Disable the access point.
+- name: Disable AP
+  enclave.shelly.wifi:
+    configuring: ap
+    ssid: ""
+    password: ""
+    is_open: false
+    enable: false
+
+# Set the primary WiFi connection to some network.
+- name: Primary WiFi interface connection
+  enaclave.shelly.wifi:
+    configuring: sta
+    ssid: my_home
+    password: some_secret
+    enable: true
+    ipv4mode: dhcp
+```
+
+Script management:
+```yaml
+- name: Delete script called "abc".
+  enclave.shelly.script:
+    name: abc
+    state: deleted
+
+- name: Upload test script
+    enclave.shelly.script:
+    name: test1
+    state: present
+    enable: false
+    script_path: files/test_script.js
+
+- name: Update and start test script
+    enclave.shelly.script:
+    name: test1
+    state: running
+    enable: false
+    script_path: files/test_script.js
+```
