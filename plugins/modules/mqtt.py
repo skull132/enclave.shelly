@@ -165,14 +165,20 @@ def run_module():
 
     new_config = current_config.copy()
     for key, current_value in current_config.items():
-        # 'pass' is a reserved word — module param is 'password', API field is 'pass'
-        param_key = "password" if key == "pass" else key
-        if param_key not in module.params or module.params[param_key] is None:
+        # Skip 'pass' here — handled separately below since GetConfig never returns the actual value
+        if key == "pass":
+            continue
+        if key not in module.params or module.params[key] is None:
             continue
 
-        if module.params[param_key] != current_value:
-            new_config[key] = module.params[param_key]
+        if module.params[key] != current_value:
+            new_config[key] = module.params[key]
             result["changed"] = True
+
+    # Password is always set if provided — GetConfig returns null so we can't diff it
+    if module.params.get("password") is not None:
+        new_config["pass"] = module.params["password"]
+        result["changed"] = True
 
     if module.check_mode:
         if result["changed"]:
