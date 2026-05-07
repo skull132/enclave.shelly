@@ -55,7 +55,7 @@ def run_module():
         argument_spec=module_args,
         supports_check_mode=True,
         required_if=[
-            ("enable", True, ("password"), False)
+            ("enable", True, ("password",), False)
         ]
     )
 
