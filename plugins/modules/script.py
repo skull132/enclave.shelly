@@ -285,6 +285,8 @@ def run_module():
             result["restart_required"] = set_script_enable(current_script_state, module.params["enable"], connection)
 
     result["changed"] = changed
+    if current_script_state is not None:
+        result["script_id"] = current_script_state.id
     module.exit_json(**result)
 
 

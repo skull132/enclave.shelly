@@ -128,6 +128,7 @@ def run_module():
         server=dict(type="str", required=False),
         client_id=dict(type="str", required=False),
         user=dict(type="str", required=False),
+        password=dict(type="str", required=False, no_log=True),
         ssl_ca=dict(type="str", required=False, choices=["none", "*", "user_ca.pem", "ca.pem"]),
         topic_prefix=dict(type="str", required=False),
         rpc_ntf=dict(type="bool", required=False, default=True),
@@ -164,12 +165,20 @@ def run_module():
 
     new_config = current_config.copy()
     for key, current_value in current_config.items():
-        if not key in module.params:
+        # Skip 'pass' here — handled separately below since GetConfig never returns the actual value
+        if key == "pass":
+            continue
+        if key not in module.params or module.params[key] is None:
             continue
 
         if module.params[key] != current_value:
             new_config[key] = module.params[key]
             result["changed"] = True
+
+    # Password is always set if provided — GetConfig returns null so we can't diff it
+    if module.params.get("password") is not None:
+        new_config["pass"] = module.params["password"]
+        result["changed"] = True
 
     if module.check_mode:
         if result["changed"]:
